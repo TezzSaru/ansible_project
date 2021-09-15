@@ -11,14 +11,6 @@
     name: "nexus"
     state: present
 
-- name: Create a directory for installing nexus if it does not exist
-  file:
-    path: "/opt"
-    state: directory
-    mode: '0755'
-    owner: "nexus"
-    group: "nexus"
-
 - name: Download nexus tar.gz file from internet
   get_url:
     url: "http://download.sonatype.com/nexus/3/latest-unix.tar.gz"
@@ -30,11 +22,27 @@
     src: "/opt/nexus-3.34.0-01-unix.tar.gz"
     dest: "/opt"
     remote_src: yes
+    
+- name: Create a directory for installing nexus if it does not exist
+  file:
+    path: "/opt/sonatype-work"
+    state: directory
+    recurse: yes
+    owner: "nexus"
+    group: "nexus"
+    
+- name: Create a directory for installing nexus if it does not exist
+  file:
+    path: "/opt/nexus-3.34.0-01-unix"
+    state: directory
+    recurse: yes
+    owner: "nexus"
+    group: "nexus"
 
 - name: Update symlink for opt/nexus
   file:
     path: "/opt/nexus"
-    src: "/opt/nexus-3.34.0-01"
+    src: "/opt/nexus-3.34.0-01-unix"
     state: link
     owner: "nexus"
     group: "nexus"
@@ -42,7 +50,7 @@
 - name: Setting nexus user
   lineinfile:
     path: "/opt/nexus/bin/nexus.rc"
-    regexp: "run_as_user="
+    regexp: "#run_as_user="
     line: "run_as_user=\"nexus\""
 
 - name: Create symlink to start nexus as Linux service
