@@ -6,7 +6,7 @@
     shell: /bin/nologin
     state: present
 
-- name: crete group app
+- name: crete group nexus
   group:
     name: "nexus"
     state: present
@@ -34,7 +34,7 @@
 - name: Update symlink for opt/nexus
   file:
     path: "/opt/nexus"
-    src: "opt/nexus-3.34.0-01"
+    src: "/opt/nexus-3.34.0-01"
     state: link
     owner: "nexus"
     group: "nexus"
