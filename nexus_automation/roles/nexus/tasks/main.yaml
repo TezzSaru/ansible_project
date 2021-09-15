@@ -1,4 +1,9 @@
 ---
+- name: install open jdk 1.8
+  yum:
+    name: 
+    state: present
+    
 - name: create user "nexus" and its a /bin/nologin
   user:
     name: "nexus"
