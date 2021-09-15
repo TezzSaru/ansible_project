@@ -1,0 +1,61 @@
+---
+- name: create user "nexus" and its a /bin/nologin
+  user:
+    name: "nexus"
+    comment: "Nexus"
+    shell: /bin/nologin
+    state: present
+
+- name: crete group app
+  group:
+    name: "nexus"
+    state: present
+
+- name: Create a directory for installing nexus if it does not exist
+  file:
+    path: "/opt"
+    state: directory
+    mode: '0755'
+    owner: "nexus"
+    group: "nexus"
+
+- name: Download nexus tar.gz file from internet
+  get_url:
+    url: "http://download.sonatype.com/nexus/3/latest-unix.tar.gz"
+    dest: "/opt"
+    mode: '0440'
+
+- name: Unarchive nexus tar file that is already on the remote machine
+  unarchive:
+    src: "/opt/nexus-3.34.0-01-unix.tar.gz"
+    dest: "/opt"
+    remote_src: yes
+
+- name: Update symlink for opt/nexus
+  file:
+    path: "/opt/nexus"
+    src: "opt/nexus-3.34.0-01"
+    state: link
+    owner: "nexus"
+    group: "nexus"
+
+- name: Setting nexus user
+  lineinfile:
+    path: "/opt/nexus/bin/nexus.rc"
+    regexp: "run_as_user="
+    line: "run_as_user=\"nexus\""
+
+- name: Create symlink to start nexus as Linux service
+  file:
+    path: "/etc/init.d/nexus"
+    src: "/opt/nexus/bin/nexus"
+    state: link
+    owner: "nexus"
+    group: "nexus"
+
+- name: Start and enable nexus service
+  service:
+    name: nexus
+    state: started
+    enabled: yes
+
