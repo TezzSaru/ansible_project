@@ -1,0 +1,6 @@
+[web]
+172.31.40.114 ansible_connection=ssh ansible_ssh_user=ec2-user ansible ssh_private_key_folder="/home/ec2-user/.ssh/ansible_key.pem" ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+[ansible_auto]
+172.31.40.114 ansible_connection=ssh ansible_ssh_user=ec2-user ansible ssh_private_key_folder="/home/ec2-user/.ssh/ansible_key.pem" ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+172.31.27.109 ansible_connection=ssh ansible_ssh_user=ec2-user ansible ssh_private_key_folder="/home/ec2-user/.ssh/ansible_key.pem" ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
