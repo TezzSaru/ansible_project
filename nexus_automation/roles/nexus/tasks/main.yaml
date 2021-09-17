@@ -1,56 +1,56 @@
 ---
 - name: install open jdk 1.8
   yum:
-    name: 
+    name: "{{install_pkg}}"
     state: present
-    
+
 - name: create user "nexus" and its a /bin/nologin
   user:
-    name: "nexus"
+    name: "{{user_name}}"
     comment: "Nexus"
     shell: /bin/nologin
     state: present
 
 - name: crete group nexus
   group:
-    name: "nexus"
+    name: "{{group_name}}"
     state: present
 
 - name: Download nexus tar.gz file from internet
   get_url:
-    url: "http://download.sonatype.com/nexus/3/latest-unix.tar.gz"
+    url: {{nexus_url}}
     dest: "/opt"
     mode: '0440'
 
 - name: Unarchive nexus tar file that is already on the remote machine
   unarchive:
-    src: "/opt/nexus-3.34.0-01-unix.tar.gz"
+    src: "/opt/nexus-{{nexus_version}}-unix.tar.gz"
     dest: "/opt"
     remote_src: yes
-    
+
 - name: Create a directory for installing nexus if it does not exist
   file:
     path: "/opt/sonatype-work"
     state: directory
     recurse: yes
-    owner: "nexus"
-    group: "nexus"
-    
+    owner: "{{user_name}}"
+    group: "{{group_name}}"
+
 - name: Create a directory for installing nexus if it does not exist
   file:
-    path: "/opt/nexus-3.34.0-01-unix"
+    path: "/opt/nexus-{{nexus_version}}-unix"
     state: directory
     recurse: yes
-    owner: "nexus"
-    group: "nexus"
+    owner: "{{user_name}}"
+    group: "{{group_name}}"
 
 - name: Update symlink for opt/nexus
   file:
     path: "/opt/nexus"
-    src: "/opt/nexus-3.34.0-01-unix"
+    src: "/opt/nexus-{{nexus_version}}-unix"
     state: link
-    owner: "nexus"
-    group: "nexus"
+    owner: "{{user_name}}"
+    group: "{{group_name}}"
 
 - name: Setting nexus user
   lineinfile:
@@ -63,8 +63,8 @@
     path: "/etc/init.d/nexus"
     src: "/opt/nexus/bin/nexus"
     state: link
-    owner: "nexus"
-    group: "nexus"
+    owner: "{{user_name}}"
+    group: "{{group_name}}"
 
 - name: Start and enable nexus service
   service:
