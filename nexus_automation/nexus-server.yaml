@@ -1,6 +1,6 @@
 ---
 - name: Install nexus
-  hosts: ansible_auto
+  hosts: nexus_auto
   become: yes
   become_method: sudo
 
