@@ -18,7 +18,7 @@
 
 - name: Download nexus tar.gz file from internet
   get_url:
-    url: {{nexus_url}}
+    url: "{{nexus_url}}"
     dest: "/opt"
     mode: '0440'
 
